@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Barber Pro - Agendamento</title>
+    
+    <!-- Fonte Inter para melhor legibilidade -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Ícones Phosphor -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Tailwind CSS (via CDN para arquivo único) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            500: '#f59e0b', // Dourado/Âmbar
+                            600: '#d97706',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* CSS Customizado para detalhes específicos e hide scrollbar */
+        body {
+            background-color: #09090b; /* zinc-950 */
+            color: #fafafa;
+        }
+        /* Oculta barra de rolagem mas mantém funcionalidade */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        /* Transições suaves nas trocas de tela */
+        .screen {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        .screen.active {
+            display: flex;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="h-screen w-screen overflow-hidden flex justify-center bg-zinc-950 font-sans antialiased text-zinc-100">
+
+    <!-- Container do App (Simula a tela do celular) -->
+    <main class="w-full max-w-md h-full bg-zinc-900 relative flex flex-col shadow-2xl border-x border-zinc-800 overflow-hidden">
+
+        <!-- 1. TELA DE LOGIN -->
+        <section id="screen-login" class="screen active flex-col h-full w-full">
+            <div class="flex-1 flex flex-col justify-center px-6">
+                <div class="text-center mb-10">
+                    <i class="ph-fill ph-scissors text-brand-500 text-5xl mb-4"></i>
+                    <h1 class="text-3xl font-bold text-white tracking-tight">Barber Pro</h1>
+                    <p class="text-zinc-400 mt-2">Agende seu horário com facilidade</p>
+                </div>
+
+                <form id="login-form" class="flex flex-col gap-4" onsubmit="event.preventDefault(); navigateTo('screen-home');">
+                    <div>
+                        <label class="block text-sm font-medium text-zinc-400 mb-1" for="phone">Celular (WhatsApp)</label>
+                        <input type="tel" id="phone" placeholder="(00) 00000-0000" class="w-full h-14 bg-zinc-800 border border-zinc-700 rounded-xl px-4 text-white focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-colors" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-zinc-400 mb-1" for="password">Senha</label>
+                        <input type="password" id="password" placeholder="••••••••" class="w-full h-14 bg-zinc-800 border border-zinc-700 rounded-xl px-4 text-white focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-colors" required>
+                    </div>
+                    
+                    <button type="submit" class="w-full h-14 mt-4 bg-brand-500 hover:bg-brand-600 text-zinc-950 font-bold rounded-xl transition-colors text-lg flex items-center justify-center gap-2">
+                        Entrar <i class="ph-bold ph-arrow-right"></i>
+                    </button>
+                </form>
+
+                <div class="mt-8 text-center">
+                    <button onclick="navigateTo('screen-admin')" class="text-sm text-zinc-500 underline underline-offset-4">
+                        Acesso Restrito (Barbeiro)
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. HOME DO CLIENTE -->
+        <section id="screen-home" class="screen flex-col h-full w-full">
+            <header class="p-6 pb-4 bg-zinc-900 border-b border-zinc-800 flex justify-between items-center">
+                <div>
+                    <p class="text-sm text-zinc-400">Olá, bem-vindo!</p>
+                    <h2 class="text-xl font-bold text-white">João Silva</h2>
+                </div>
+                <button onclick="navigateTo('screen-login')" class="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-zinc-400">
+                    <i class="ph ph-sign-out text-xl"></i>
+                </button>
+            </header>
+
+            <div class="flex-1 overflow-y-auto p-6 flex flex-col gap-6">
+                <!-- Status de agendamento vazio (MVP) -->
+                <div class="bg-zinc-800/50 border border-zinc-700/50 rounded-2xl p-6 text-center">
+                    <div class="w-16 h-16 bg-zinc-800 rounded-full flex items-center justify-center mx-auto mb-4 text-brand-500">
+                        <i class="ph ph-calendar-blank text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-white mb-2">Nenhum horário marcado</h3>
+                    <p class="text-sm text-zinc-400">Você ainda não tem agendamentos futuros. Que tal marcar um corte agora?</p>
+                </div>
+            </div>
+
+            <!-- Footer Fixo (Lei de Fitts) -->
+            <div class="p-4 border-t border-zinc-800 bg-zinc-900">
+                <button onclick="navigateTo('screen-services')" class="w-full h-14 bg-brand-500 hover:bg-brand-600 text-zinc-950 font-bold rounded-xl transition-colors text-lg flex items-center justify-center gap-2">
+                    <i class="ph-bold ph-plus"></i> Novo Agendamento
+                </button>
+            </div>
+        </section>
+
+        <!-- 3. SELEÇÃO DE SERVIÇO -->
+        <section id="screen-services" class="screen flex-col h-full w-full bg-zinc-900">
+            <header class="p-4 flex items-center gap-4 border-b border-zinc-800">
+                <button onclick="navigateTo('screen-home')" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-zinc-800">
+                    <i class="ph-bold ph-arrow-left text-xl text-white"></i>
+                </button>
+                <h2 class="text-lg font-bold text-white">Escolha o Serviço</h2>
+            </header>
+
+            <div class="flex-1 overflow-y-auto p-4 flex flex-col gap-3" id="service-list">
+                <!-- Cards populados via JS -->
+            </div>
+
+            <div class="p-4 border-t border-zinc-800 bg-zinc-900">
+                <button id="btn-next-datetime" onclick="navigateTo('screen-datetime')" disabled class="w-full h-14 bg-zinc-800 text-zinc-500 font-bold rounded-xl transition-colors text-lg flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed">
+                    Continuar
+                </button>
+            </div>
+        </section>
+
+        <!-- 4. DATA E HORA -->
+        <section id="screen-datetime" class="screen flex-col h-full w-full bg-zinc-900">
+            <header class="p-4 flex items-center gap-4 border-b border-zinc-800">
+                <button onclick="navigateTo('screen-services')" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-zinc-800">
+                    <i class="ph-bold ph-arrow-left text-xl text-white"></i>
+                </button>
+                <h2 class="text-lg font-bold text-white">Data e Hora</h2>
+            </header>
+
+            <div class="flex-1 overflow-y-auto">
+                <div class="p-4 border-b border-zinc-800">
+                    <h3 class="text-sm font-medium text-zinc-400 mb-3">Dias Disponíveis</h3>
+                    <!-- Scroll horizontal de datas -->
+                    <div class="flex gap-3 overflow-x-auto no-scrollbar pb-2" id="date-list">
+                        <!-- Gerado via JS -->
+                    </div>
+                </div>
+
+                <div class="p-4">
+                    <h3 class="text-sm font-medium text-zinc-400 mb-3">Horários Livres</h3>
+                    <div class="grid grid-cols-3 gap-3" id="time-list">
+                        <!-- Gerado via JS -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-4 border-t border-zinc-800 bg-zinc-900">
+                <button id="btn-next-confirm" onclick="prepareConfirmation()" disabled class="w-full h-14 bg-zinc-800 text-zinc-500 font-bold rounded-xl transition-colors text-lg flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed">
+                    Revisar Agendamento
+                </button>
+            </div>
+        </section>
+
+        <!-- 5. CONFIRMAÇÃO E SUCESSO -->
+        <section id="screen-confirm" class="screen flex-col h-full w-full bg-zinc-900">
+            <header class="p-4 flex items-center gap-4 border-b border-zinc-800">
+                <button onclick="navigateTo('screen-datetime')" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-zinc-800">
+                    <i class="ph-bold ph-arrow-left text-xl text-white"></i>
+                </button>
+                <h2 class="text-lg font-bold text-white">Confirmar</h2>
+            </header>
+
+            <div class="flex-1 overflow-y-auto p-6 flex flex-col items-center justify-center">
+                <div id="confirm-box" class="w-full bg-zinc-800 rounded-2xl p-6 shadow-lg border border-zinc-700">
+                    <div class="flex items-center gap-3 mb-6">
+                        <i class="ph-fill ph-scissors text-brand-500 text-2xl"></i>
+                        <h3 class="text-xl font-bold" id="conf-service-name">Corte Social</h3>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center border-b border-zinc-700 pb-3">
+                            <span class="text-zinc-400">Data</span>
+                            <span class="font-medium text-white" id="conf-date">Qua, 15 Nov</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-zinc-700 pb-3">
+                            <span class="text-zinc-400">Horário</span>
+                            <span class="font-medium text-white" id="conf-time">14:00</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-zinc-700 pb-3">
+                            <span class="text-zinc-400">Duração</span>
+                            <span class="font-medium text-white" id="conf-duration">45 min</span>
+                        </div>
+                        <div class="flex justify-between items-center pt-2">
+                            <span class="text-zinc-400">Total a pagar</span>
+                            <span class="text-xl font-bold text-brand-500" id="conf-price">R$ 45,00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Box de Sucesso (Oculto inicialmente) -->
+                <div id="success-box" class="hidden flex-col items-center text-center w-full">
+                    <div class="w-20 h-20 bg-brand-500 rounded-full flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(245,158,11,0.3)]">
+                        <i class="ph-bold ph-check text-4xl text-zinc-950"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-white mb-2">Tudo Certo!</h2>
+                    <p class="text-zinc-400">Seu horário foi agendado com sucesso. Te esperamos na barbearia!</p>
+                </div>
+            </div>
+
+            <div class="p-4 border-t border-zinc-800 bg-zinc-900" id="confirm-footer">
+                <button onclick="finishAppointment()" class="w-full h-14 bg-brand-500 hover:bg-brand-600 text-zinc-950 font-bold rounded-xl transition-colors text-lg flex items-center justify-center shadow-lg">
+                    Confirmar Agendamento
+                </button>
+            </div>
+            
+            <div class="p-4 border-t border-zinc-800 bg-zinc-900 hidden" id="success-footer">
+                <button onclick="resetToHome()" class="w-full h-14 bg-zinc-800 hover:bg-zinc-700 text-white font-bold rounded-xl transition-colors text-lg flex items-center justify-center">
+                    Voltar ao Início
+                </button>
+            </div>
+        </section>
+
+        <!-- 6. PAINEL ADMIN (VISÃO BARBEIRO) -->
+        <section id="screen-admin" class="screen flex-col h-full w-full bg-zinc-950">
+            <header class="p-6 pb-4 bg-zinc-900 border-b border-zinc-800 flex justify-between items-center">
+                <div>
+                    <p class="text-sm text-brand-500 font-medium">Painel do Barbeiro</p>
+                    <h2 class="text-xl font-bold text-white">Agenda de Hoje</h2>
+                </div>
+                <button onclick="navigateTo('screen-login')" class="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-zinc-400">
+                    <i class="ph ph-sign-out text-xl"></i>
+                </button>
+            </header>
+
+            <div class="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
+                <!-- Item da agenda (Mockado para MVP) -->
+                <div class="bg-zinc-900 border-l-4 border-brand-500 rounded-r-xl p-4 flex justify-between items-center shadow-md">
+                    <div>
+                        <span class="text-sm font-bold text-brand-500">09:00</span>
+                        <h4 class="font-bold text-white text-lg">Carlos Eduardo</h4>
+                        <p class="text-sm text-zinc-400">Corte + Barba (60 min)</p>
+                    </div>
+                    <button class="w-10 h-10 rounded-full bg-red-500/10 text-red-500 flex items-center justify-center hover:bg-red-500 hover:text-white transition-colors">
+                        <i class="ph-bold ph-x"></i>
+                    </button>
+                </div>
+
+                <div class="bg-zinc-900 border-l-4 border-zinc-700 rounded-r-xl p-4 flex justify-between items-center shadow-md opacity-50">
+                    <div>
+                        <span class="text-sm font-bold text-zinc-400">10:00</span>
+                        <h4 class="font-bold text-zinc-300 text-lg">Horário Livre</h4>
+                        <p class="text-sm text-zinc-500">-</p>
+                    </div>
+                </div>
+
+                <div class="bg-zinc-900 border-l-4 border-brand-500 rounded-r-xl p-4 flex justify-between items-center shadow-md">
+                    <div>
+                        <span class="text-sm font-bold text-brand-500">11:00</span>
+                        <h4 class="font-bold text-white text-lg">João Silva</h4>
+                        <p class="text-sm text-zinc-400">Corte Social (45 min)</p>
+                    </div>
+                    <button class="w-10 h-10 rounded-full bg-red-500/10 text-red-500 flex items-center justify-center hover:bg-red-500 hover:text-white transition-colors">
+                        <i class="ph-bold ph-x"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Script de Lógica do SPA e UI -->
+    <script>
+        // Dados Mockados para o MVP
+        const services = [
+            { id: 1, name: "Corte Social", price: 45.00, duration: 45 },
+            { id: 2, name: "Barba Completa", price: 35.00, duration: 30 },
+            { id: 3, name: "Corte + Barba (Combo)", price: 70.00, duration: 60 },
+            { id: 4, name: "Acabamento (Pezinho)", price: 20.00, duration: 15 }
+        ];
+
+        const dates = [
+            { day: '15', weekday: 'Qua' },
+            { day: '16', weekday: 'Qui' },
+            { day: '17', weekday: 'Sex' },
+            { day: '18', weekday: 'Sáb' }
+        ];
+
+        const times = ['09:00', '09:45', '10:30', '11:15', '14:00', '14:45', '15:30', '16:15'];
+
+        // Estado Global da Aplicação
+        let appState = {
+            service: null,
+            date: null,
+            time: null
+        };
+
+        // Navegação entre Telas
+        function navigateTo(screenId) {
+            document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+            
+            // Lógica específica ao entrar na tela
+            if(screenId === 'screen-services') renderServices();
+            if(screenId === 'screen-datetime') renderDateTime();
+        }
+
+        // Renderiza lista de serviços
+        function renderServices() {
+            const list = document.getElementById('service-list');
+            list.innerHTML = '';
+            
+            services.forEach(svc => {
+                const isSelected = appState.service?.id === svc.id;
+                const card = document.createElement('div');
+                card.className = `p-4 rounded-xl border cursor-pointer transition-all flex justify-between items-center ${isSelected ? 'bg-zinc-800 border-brand-500' : 'bg-zinc-900 border-zinc-800 hover:border-zinc-600'}`;
+                card.onclick = () => selectService(svc);
+                
+                card.innerHTML = `
+                    <div>
+                        <h4 class="font-bold text-white text-lg">${svc.name}</h4>
+                        <p class="text-sm text-zinc-400"><i class="ph ph-clock mr-1"></i> ${svc.duration} min</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-brand-500 font-bold">R$ ${svc.price.toFixed(2)}</span>
+                    </div>
+                `;
+                list.appendChild(card);
+            });
+            updateButtons();
+        }
+
+        function selectService(svc) {
+            appState.service = svc;
+            renderServices(); // Re-renderiza para atualizar classes ativas
+        }
+
+        // Renderiza Datas e Horários
+        function renderDateTime() {
+            const dateList = document.getElementById('date-list');
+            const timeList = document.getElementById('time-list');
+            dateList.innerHTML = '';
+            timeList.innerHTML = '';
+
+            // Renderiza Chips de Data
+            dates.forEach(d => {
+                const isSelected = appState.date?.day === d.day;
+                const btn = document.createElement('button');
+                btn.className = `min-w-[70px] h-[80px] rounded-xl flex flex-col items-center justify-center border transition-all ${isSelected ? 'bg-brand-500 border-brand-500 text-zinc-950' : 'bg-zinc-900 border-zinc-800 text-zinc-400'}`;
+                btn.onclick = () => { appState.date = d; appState.time = null; renderDateTime(); };
+                
+                btn.innerHTML = `
+                    <span class="text-xs font-medium uppercase mb-1">${d.weekday}</span>
+                    <span class="text-2xl font-bold">${d.day}</span>
+                `;
+                dateList.appendChild(btn);
+            });
+
+            // Renderiza Chips de Hora
+            times.forEach(t => {
+                const isSelected = appState.time === t;
+                const isDisabled = !appState.date; // Bloqueia horas se não tiver data
+                const btn = document.createElement('button');
+                btn.className = `h-12 rounded-lg font-medium border transition-all ${isSelected ? 'bg-brand-500 border-brand-500 text-zinc-950' : (isDisabled ? 'bg-zinc-900/50 border-zinc-800/50 text-zinc-600 opacity-50' : 'bg-zinc-900 border-zinc-800 text-zinc-300 hover:border-zinc-500')}`;
+                btn.disabled = isDisabled;
+                btn.onclick = () => { appState.time = t; renderDateTime(); };
+                
+                btn.innerText = t;
+                timeList.appendChild(btn);
+            });
+
+            updateButtons();
+        }
+
+        // Habilita/Desabilita os botões de avançar baseados no estado
+        function updateButtons() {
+            // Tela Serviços
+            const btnSvc = document.getElementById('btn-next-datetime');
+            if(appState.service) {
+                btnSvc.disabled = false;
+                btnSvc.className = "w-full h-14 bg-brand-500 hover:bg-brand-600 text-zinc-950 font-bold rounded-xl transition-colors text-lg flex items-center justify-center";
+            }
+
+            // Tela DateTime
+            const btnDt = document.getElementById('btn-next-confirm');
+            if(appState.date && appState.time) {
+                btnDt.disabled = false;
+                btnDt.className = "w-full h-14 bg-brand-500 hover:bg-brand-600 text-zinc-950 font-bold rounded-xl transition-colors text-lg flex items-center justify-center";
+            } else {
+                btnDt.disabled = true;
+                btnDt.className = "w-full h-14 bg-zinc-800 text-zinc-500 font-bold rounded-xl transition-colors text-lg flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed";
+            }
+        }
+
+        // Prepara dados para a tela de confirmação
+        function prepareConfirmation() {
+            document.getElementById('conf-service-name').innerText = appState.service.name;
+            document.getElementById('conf-date').innerText = `${appState.date.weekday}, ${appState.date.day} Nov`;
+            document.getElementById('conf-time').innerText = appState.time;
+            document.getElementById('conf-duration').innerText = `${appState.service.duration} min`;
+            document.getElementById('conf-price').innerText = `R$ ${appState.service.price.toFixed(2)}`;
+            
+            // Reseta visualizações de sucesso (caso o usuário tenha vindo e voltado)
+            document.getElementById('confirm-box').classList.remove('hidden');
+            document.getElementById('confirm-footer').classList.remove('hidden');
+            document.getElementById('success-box').classList.add('hidden');
+            document.getElementById('success-footer').classList.add('hidden');
+
+            navigateTo('screen-confirm');
+        }
+
+        // Simula o POST para a API e sucesso
+        function finishAppointment() {
+            // Oculta resumo, mostra sucesso
+            document.getElementById('confirm-box').classList.add('hidden');
+            document.getElementById('confirm-footer').classList.add('hidden');
+            
+            document.getElementById('success-box').classList.remove('hidden');
+            document.getElementById('success-box').classList.add('flex'); // Precisa do flex
+            document.getElementById('success-footer').classList.remove('hidden');
+        }
+
+        // Volta para a Home limpando os dados
+        function resetToHome() {
+            appState = { service: null, date: null, time: null };
+            navigateTo('screen-home');
+        }
+
+        // Init App (Mock pre-preenchimento no celular)
+        document.getElementById('phone').value = "(11) 98765-4321";
+        document.getElementById('password').value = "123456";
+
+    </script>
+</body>
+</html>
