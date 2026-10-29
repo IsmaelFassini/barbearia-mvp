@@ -5,54 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Barber Pro - Agendamento</title>
     
-    <!-- Fonte Inter para melhor legibilidade -->
+    <!-- Fonte Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
     <!-- Ícones Phosphor -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-
-    <!-- Tailwind CSS (via CDN para arquivo único) -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                    colors: {
-                        brand: {
-                            500: '#f59e0b', // Dourado/Âmbar
-                            600: '#d97706',
-                        }
-                    }
+                    fontFamily: { sans: ['Inter', 'sans-serif'], },
+                    colors: { brand: { 500: '#f59e0b', 600: '#d97706', } }
                 }
             }
         }
     </script>
 
     <style>
-        /* CSS Customizado para detalhes específicos e hide scrollbar */
-        body {
-            background-color: #09090b; /* zinc-950 */
-            color: #fafafa;
-        }
-        /* Oculta barra de rolagem mas mantém funcionalidade */
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-        /* Transições suaves nas trocas de tela */
-        .screen {
-            display: none;
-            animation: fadeIn 0.3s ease-in-out;
-        }
-        .screen.active {
-            display: flex;
-        }
+        body { background-color: #09090b; color: #fafafa; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .screen { display: none; animation: fadeIn 0.3s ease-in-out; }
+        .screen.active { display: flex; }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -61,7 +36,6 @@
 </head>
 <body class="h-screen w-screen overflow-hidden flex justify-center bg-zinc-950 font-sans antialiased text-zinc-100">
 
-    <!-- Container do App (Simula a tela do celular) -->
     <main class="w-full max-w-md h-full bg-zinc-900 relative flex flex-col shadow-2xl border-x border-zinc-800 overflow-hidden">
 
         <!-- 1. TELA DE LOGIN -->
@@ -73,14 +47,14 @@
                     <p class="text-zinc-400 mt-2">Agende seu horário com facilidade</p>
                 </div>
 
-                <form id="login-form" class="flex flex-col gap-4" onsubmit="event.preventDefault(); navigateTo('screen-home');">
+                <form id="form-login" class="flex flex-col gap-4">
                     <div>
-                        <label class="block text-sm font-medium text-zinc-400 mb-1" for="phone">Celular (WhatsApp)</label>
-                        <input type="tel" id="phone" placeholder="(00) 00000-0000" class="w-full h-14 bg-zinc-800 border border-zinc-700 rounded-xl px-4 text-white focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-colors" required>
+                        <label class="block text-sm font-medium text-zinc-400 mb-1" for="login-phone">Celular (WhatsApp)</label>
+                        <input type="tel" id="login-phone" placeholder="(00) 00000-0000" class="w-full h-14 bg-zinc-800 border border-zinc-700 rounded-xl px-4 text-white focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-colors" required>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-zinc-400 mb-1" for="password">Senha</label>
-                        <input type="password" id="password" placeholder="••••••••" class="w-full h-14 bg-zinc-800 border border-zinc-700 rounded-xl px-4 text-white focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-colors" required>
+                        <label class="block text-sm font-medium text-zinc-400 mb-1" for="login-password">Senha</label>
+                        <input type="password" id="login-password" placeholder="••••••••" class="w-full h-14 bg-zinc-800 border border-zinc-700 rounded-xl px-4 text-white focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-colors" required>
                     </div>
                     
                     <button type="submit" class="w-full h-14 mt-4 bg-brand-500 hover:bg-brand-600 text-zinc-950 font-bold rounded-xl transition-colors text-lg flex items-center justify-center gap-2">
@@ -88,9 +62,44 @@
                     </button>
                 </form>
 
+                <div class="mt-8 text-center flex flex-col gap-4">
+                    <button type="button" onclick="navigateTo('screen-register')" class="text-sm text-brand-500 font-medium hover:underline underline-offset-4">
+                        Não tem conta? Cadastre-se
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 1.5 TELA DE CADASTRO -->
+        <section id="screen-register" class="screen flex-col h-full w-full">
+            <div class="flex-1 flex flex-col justify-center px-6">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-bold text-white tracking-tight">Criar Conta</h2>
+                    <p class="text-zinc-400 mt-2">Preencha os dados para agendar</p>
+                </div>
+
+                <form id="form-register" class="flex flex-col gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-zinc-400 mb-1" for="register-name">Nome Completo</label>
+                        <input type="text" id="register-name" placeholder="Seu nome" class="w-full h-14 bg-zinc-800 border border-zinc-700 rounded-xl px-4 text-white focus:outline-none focus:border-brand-500 transition-colors" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-zinc-400 mb-1" for="register-phone">Celular (WhatsApp)</label>
+                        <input type="tel" id="register-phone" placeholder="Ex: 51999998888" class="w-full h-14 bg-zinc-800 border border-zinc-700 rounded-xl px-4 text-white focus:outline-none focus:border-brand-500 transition-colors" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-zinc-400 mb-1" for="register-password">Senha</label>
+                        <input type="password" id="register-password" placeholder="••••••••" class="w-full h-14 bg-zinc-800 border border-zinc-700 rounded-xl px-4 text-white focus:outline-none focus:border-brand-500 transition-colors" required>
+                    </div>
+                    
+                    <button type="submit" class="w-full h-14 mt-4 bg-brand-500 hover:bg-brand-600 text-zinc-950 font-bold rounded-xl transition-colors text-lg flex items-center justify-center">
+                        Cadastrar
+                    </button>
+                </form>
+
                 <div class="mt-8 text-center">
-                    <button onclick="navigateTo('screen-admin')" class="text-sm text-zinc-500 underline underline-offset-4">
-                        Acesso Restrito (Barbeiro)
+                    <button type="button" onclick="navigateTo('screen-login')" class="text-sm text-zinc-400 hover:text-white transition-colors">
+                        <i class="ph-bold ph-arrow-left inline-block align-middle mr-1"></i> Voltar para o Login
                     </button>
                 </div>
             </div>
@@ -101,25 +110,23 @@
             <header class="p-6 pb-4 bg-zinc-900 border-b border-zinc-800 flex justify-between items-center">
                 <div>
                     <p class="text-sm text-zinc-400">Olá, bem-vindo!</p>
-                    <h2 class="text-xl font-bold text-white">João Silva</h2>
+                    <h2 id="home-user-name" class="text-xl font-bold text-white">Carregando...</h2>
                 </div>
-                <button onclick="navigateTo('screen-login')" class="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-zinc-400">
+                <button onclick="fazerLogout()" class="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-zinc-400 hover:text-brand-500">
                     <i class="ph ph-sign-out text-xl"></i>
                 </button>
             </header>
 
             <div class="flex-1 overflow-y-auto p-6 flex flex-col gap-6">
-                <!-- Status de agendamento vazio (MVP) -->
                 <div class="bg-zinc-800/50 border border-zinc-700/50 rounded-2xl p-6 text-center">
                     <div class="w-16 h-16 bg-zinc-800 rounded-full flex items-center justify-center mx-auto mb-4 text-brand-500">
                         <i class="ph ph-calendar-blank text-2xl"></i>
                     </div>
-                    <h3 class="text-lg font-semibold text-white mb-2">Nenhum horário marcado</h3>
-                    <p class="text-sm text-zinc-400">Você ainda não tem agendamentos futuros. Que tal marcar um corte agora?</p>
+                    <h3 class="text-lg font-semibold text-white mb-2">Pronto para cortar?</h3>
+                    <p class="text-sm text-zinc-400">Marque o seu horário e garanta o seu estilo para a semana.</p>
                 </div>
             </div>
 
-            <!-- Footer Fixo (Lei de Fitts) -->
             <div class="p-4 border-t border-zinc-800 bg-zinc-900">
                 <button onclick="navigateTo('screen-services')" class="w-full h-14 bg-brand-500 hover:bg-brand-600 text-zinc-950 font-bold rounded-xl transition-colors text-lg flex items-center justify-center gap-2">
                     <i class="ph-bold ph-plus"></i> Novo Agendamento
@@ -135,11 +142,7 @@
                 </button>
                 <h2 class="text-lg font-bold text-white">Escolha o Serviço</h2>
             </header>
-
-            <div class="flex-1 overflow-y-auto p-4 flex flex-col gap-3" id="service-list">
-                <!-- Cards populados via JS -->
-            </div>
-
+            <div class="flex-1 overflow-y-auto p-4 flex flex-col gap-3" id="service-list"></div>
             <div class="p-4 border-t border-zinc-800 bg-zinc-900">
                 <button id="btn-next-datetime" onclick="navigateTo('screen-datetime')" disabled class="w-full h-14 bg-zinc-800 text-zinc-500 font-bold rounded-xl transition-colors text-lg flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed">
                     Continuar
@@ -155,24 +158,21 @@
                 </button>
                 <h2 class="text-lg font-bold text-white">Data e Hora</h2>
             </header>
-
             <div class="flex-1 overflow-y-auto">
                 <div class="p-4 border-b border-zinc-800">
-                    <h3 class="text-sm font-medium text-zinc-400 mb-3">Dias Disponíveis</h3>
-                    <!-- Scroll horizontal de datas -->
-                    <div class="flex gap-3 overflow-x-auto no-scrollbar pb-2" id="date-list">
-                        <!-- Gerado via JS -->
-                    </div>
-                </div>
-
+    <h3 class="text-sm font-medium text-zinc-400 mb-3">Selecione o Dia</h3>
+    <!-- Cabeçalho dos dias da semana -->
+    <div class="grid grid-cols-7 gap-1 text-center font-bold text-zinc-500 text-xs uppercase mb-2">
+        <div>Dom</div><div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div>Sáb</div>
+    </div>
+    <!-- Grelha do calendário do cliente -->
+    <div class="grid grid-cols-7 gap-1.5" id="date-list"></div>
+</div>
                 <div class="p-4">
                     <h3 class="text-sm font-medium text-zinc-400 mb-3">Horários Livres</h3>
-                    <div class="grid grid-cols-3 gap-3" id="time-list">
-                        <!-- Gerado via JS -->
-                    </div>
+                    <div class="grid grid-cols-3 gap-3" id="time-list"></div>
                 </div>
             </div>
-
             <div class="p-4 border-t border-zinc-800 bg-zinc-900">
                 <button id="btn-next-confirm" onclick="prepareConfirmation()" disabled class="w-full h-14 bg-zinc-800 text-zinc-500 font-bold rounded-xl transition-colors text-lg flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed">
                     Revisar Agendamento
@@ -188,50 +188,40 @@
                 </button>
                 <h2 class="text-lg font-bold text-white">Confirmar</h2>
             </header>
-
             <div class="flex-1 overflow-y-auto p-6 flex flex-col items-center justify-center">
                 <div id="confirm-box" class="w-full bg-zinc-800 rounded-2xl p-6 shadow-lg border border-zinc-700">
                     <div class="flex items-center gap-3 mb-6">
                         <i class="ph-fill ph-scissors text-brand-500 text-2xl"></i>
-                        <h3 class="text-xl font-bold" id="conf-service-name">Corte Social</h3>
+                        <h3 class="text-xl font-bold" id="conf-service-name">Serviço</h3>
                     </div>
-                    
                     <div class="space-y-4">
                         <div class="flex justify-between items-center border-b border-zinc-700 pb-3">
                             <span class="text-zinc-400">Data</span>
-                            <span class="font-medium text-white" id="conf-date">Qua, 15 Nov</span>
+                            <span class="font-medium text-white" id="conf-date">Data</span>
                         </div>
                         <div class="flex justify-between items-center border-b border-zinc-700 pb-3">
                             <span class="text-zinc-400">Horário</span>
-                            <span class="font-medium text-white" id="conf-time">14:00</span>
-                        </div>
-                        <div class="flex justify-between items-center border-b border-zinc-700 pb-3">
-                            <span class="text-zinc-400">Duração</span>
-                            <span class="font-medium text-white" id="conf-duration">45 min</span>
+                            <span class="font-medium text-white" id="conf-time">Hora</span>
                         </div>
                         <div class="flex justify-between items-center pt-2">
-                            <span class="text-zinc-400">Total a pagar</span>
-                            <span class="text-xl font-bold text-brand-500" id="conf-price">R$ 45,00</span>
+                            <span class="text-zinc-400">Total</span>
+                            <span class="text-xl font-bold text-brand-500" id="conf-price">R$ 0,00</span>
                         </div>
                     </div>
                 </div>
-
-                <!-- Box de Sucesso (Oculto inicialmente) -->
                 <div id="success-box" class="hidden flex-col items-center text-center w-full">
                     <div class="w-20 h-20 bg-brand-500 rounded-full flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(245,158,11,0.3)]">
                         <i class="ph-bold ph-check text-4xl text-zinc-950"></i>
                     </div>
                     <h2 class="text-2xl font-bold text-white mb-2">Tudo Certo!</h2>
-                    <p class="text-zinc-400">Seu horário foi agendado com sucesso. Te esperamos na barbearia!</p>
+                    <p class="text-zinc-400">O seu horário foi agendado com sucesso!</p>
                 </div>
             </div>
-
             <div class="p-4 border-t border-zinc-800 bg-zinc-900" id="confirm-footer">
-                <button onclick="finishAppointment()" class="w-full h-14 bg-brand-500 hover:bg-brand-600 text-zinc-950 font-bold rounded-xl transition-colors text-lg flex items-center justify-center shadow-lg">
+                <button onclick="finishAppointment()" class="w-full h-14 bg-brand-500 hover:bg-brand-600 text-zinc-950 font-bold rounded-xl transition-colors text-lg flex items-center justify-center">
                     Confirmar Agendamento
                 </button>
             </div>
-            
             <div class="p-4 border-t border-zinc-800 bg-zinc-900 hidden" id="success-footer">
                 <button onclick="resetToHome()" class="w-full h-14 bg-zinc-800 hover:bg-zinc-700 text-white font-bold rounded-xl transition-colors text-lg flex items-center justify-center">
                     Voltar ao Início
@@ -239,215 +229,530 @@
             </div>
         </section>
 
-        <!-- 6. PAINEL ADMIN (VISÃO BARBEIRO) -->
-        <section id="screen-admin" class="screen flex-col h-full w-full bg-zinc-950">
-            <header class="p-6 pb-4 bg-zinc-900 border-b border-zinc-800 flex justify-between items-center">
+        <!-- 6. PAINEL ADMIN (VISÃO BARBEIRO - TELA CHEIA PARA PC) -->
+        <section id="screen-admin" class="screen flex-col h-full w-full bg-zinc-950 fixed inset-0 z-50 overflow-hidden">
+            <header class="p-6 bg-zinc-900 border-b border-zinc-800 flex justify-between items-center shadow-md">
                 <div>
-                    <p class="text-sm text-brand-500 font-medium">Painel do Barbeiro</p>
-                    <h2 class="text-xl font-bold text-white">Agenda de Hoje</h2>
+                    <p class="text-sm text-brand-500 font-medium uppercase tracking-wider">Painel de Gestão</p>
+                    <h2 class="text-2xl font-bold text-white capitalize" id="mes-atual">Carregando...</h2>
                 </div>
-                <button onclick="navigateTo('screen-login')" class="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-zinc-400">
-                    <i class="ph ph-sign-out text-xl"></i>
-                </button>
+                <div class="flex items-center gap-4">
+                    <!-- Controles para navegar pelos meses -->
+                    <div class="flex bg-zinc-800 rounded-lg overflow-hidden border border-zinc-700">
+                        <button onclick="mudarMes(-1)" class="px-4 py-2 hover:bg-zinc-700 text-white transition-colors"><i class="ph-bold ph-caret-left"></i></button>
+                        <button onclick="dataCalendario = new Date(2026, 10, 1); carregarAgendaBarbeiro();" class="px-4 py-2 hover:bg-zinc-700 text-white font-medium border-x border-zinc-700 transition-colors">Hoje</button>
+                        <button onclick="mudarMes(1)" class="px-4 py-2 hover:bg-zinc-700 text-white transition-colors"><i class="ph-bold ph-caret-right"></i></button>
+                    </div>
+                    <!-- Botão de Sair -->
+                    <button onclick="navigateTo('screen-login')" class="w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center text-red-500 hover:bg-red-500 hover:text-white transition-all ml-4">
+                        <i class="ph ph-sign-out text-xl"></i>
+                    </button>
+                </div>
             </header>
-
-            <div class="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
-                <!-- Item da agenda (Mockado para MVP) -->
-                <div class="bg-zinc-900 border-l-4 border-brand-500 rounded-r-xl p-4 flex justify-between items-center shadow-md">
-                    <div>
-                        <span class="text-sm font-bold text-brand-500">09:00</span>
-                        <h4 class="font-bold text-white text-lg">Carlos Eduardo</h4>
-                        <p class="text-sm text-zinc-400">Corte + Barba (60 min)</p>
-                    </div>
-                    <button class="w-10 h-10 rounded-full bg-red-500/10 text-red-500 flex items-center justify-center hover:bg-red-500 hover:text-white transition-colors">
-                        <i class="ph-bold ph-x"></i>
-                    </button>
+            
+            <div class="flex-1 p-6 overflow-y-auto">
+                <!-- Cabeçalho dos Dias da Semana -->
+                <div class="grid grid-cols-7 gap-4 mb-2 text-center font-bold text-zinc-400 text-sm uppercase">
+                    <div>Dom</div><div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div>Sáb</div>
                 </div>
-
-                <div class="bg-zinc-900 border-l-4 border-zinc-700 rounded-r-xl p-4 flex justify-between items-center shadow-md opacity-50">
-                    <div>
-                        <span class="text-sm font-bold text-zinc-400">10:00</span>
-                        <h4 class="font-bold text-zinc-300 text-lg">Horário Livre</h4>
-                        <p class="text-sm text-zinc-500">-</p>
-                    </div>
+                <!-- Grid do Calendário de 7 Colunas -->
+                <div id="calendario-grid" class="grid grid-cols-7 gap-4 auto-rows-fr">
+                    <!-- As células dos dias serão geradas pelo JavaScript -->
                 </div>
-
-                <div class="bg-zinc-900 border-l-4 border-brand-500 rounded-r-xl p-4 flex justify-between items-center shadow-md">
-                    <div>
-                        <span class="text-sm font-bold text-brand-500">11:00</span>
-                        <h4 class="font-bold text-white text-lg">João Silva</h4>
-                        <p class="text-sm text-zinc-400">Corte Social (45 min)</p>
+            </div>
+            
+            <!-- Modal de Edição (Invisível por padrão) -->
+            <div id="modal-editar" class="hidden fixed inset-0 bg-black/80 z-[60] items-center justify-center p-4 backdrop-blur-sm">
+                <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-6 w-full max-w-sm shadow-2xl">
+                    <h3 class="text-xl font-bold text-white mb-4">Editar Agendamento</h3>
+                    <input type="hidden" id="edit-id">
+                    
+                    <div class="mb-4">
+                        <label class="block text-sm text-zinc-400 mb-1">Alterar Serviço</label>
+                        <select id="edit-service" class="w-full h-12 bg-zinc-800 border border-zinc-700 rounded-lg px-3 text-white focus:border-brand-500 outline-none">
+                            <option value="1">Corte Social</option>
+                            <option value="2">Barba Completa</option>
+                            <option value="3">Corte + Barba (Combo)</option>
+                            <option value="4">Acabamento (Pezinho)</option>
+                        </select>
                     </div>
-                    <button class="w-10 h-10 rounded-full bg-red-500/10 text-red-500 flex items-center justify-center hover:bg-red-500 hover:text-white transition-colors">
-                        <i class="ph-bold ph-x"></i>
-                    </button>
+
+                    <div class="mb-6">
+                        <label class="block text-sm text-zinc-400 mb-1">Novo Horário (HH:MM)</label>
+                        <input type="time" id="edit-time" class="w-full h-12 bg-zinc-800 border border-zinc-700 rounded-lg px-3 text-white focus:border-brand-500 outline-none">
+                    </div>
+
+                    <div class="flex gap-3">
+                        <button onclick="fecharModal()" class="flex-1 h-12 bg-zinc-800 text-white rounded-lg font-medium hover:bg-zinc-700 transition-colors">Cancelar</button>
+                        <button onclick="salvarEdicao()" class="flex-1 h-12 bg-brand-500 text-zinc-950 rounded-lg font-bold hover:bg-brand-600 transition-colors">Salvar</button>
+                    </div>
                 </div>
             </div>
         </section>
 
     </main>
 
-    <!-- Script de Lógica do SPA e UI -->
+    <!-- Script de Lógica do SPA, UI e Conexão com API -->
     <script>
-        // Dados Mockados para o MVP
-        const services = [
-            { id: 1, name: "Corte Social", price: 45.00, duration: 45 },
-            { id: 2, name: "Barba Completa", price: 35.00, duration: 30 },
-            { id: 3, name: "Corte + Barba (Combo)", price: 70.00, duration: 60 },
-            { id: 4, name: "Acabamento (Pezinho)", price: 20.00, duration: 15 }
-        ];
+        const API_URL = 'http://localhost:3000/api';
 
-        const dates = [
-            { day: '15', weekday: 'Qua' },
-            { day: '16', weekday: 'Qui' },
-            { day: '17', weekday: 'Sex' },
-            { day: '18', weekday: 'Sáb' }
-        ];
+        // Variável global para armazenar os horários livres buscados na API
+        let availableTimes = [];
 
-        const times = ['09:00', '09:45', '10:30', '11:15', '14:00', '14:45', '15:30', '16:15'];
+        // 1. AUTENTICAÇÃO
+        async function fazerLogin(event) {
+            event.preventDefault();
+            const phone = document.getElementById('login-phone').value;
+            const password = document.getElementById('login-password').value;
 
-        // Estado Global da Aplicação
-        let appState = {
-            service: null,
-            date: null,
-            time: null
-        };
+            try {
+                const response = await fetch(`${API_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone, password })
+                });
+                const data = await response.json();
 
-        // Navegação entre Telas
+                if (response.ok) {
+                    localStorage.setItem('barbearia_token', data.token);
+                    localStorage.setItem('barbearia_userName', data.user.name);
+                    
+                    document.getElementById('home-user-name').innerText = data.user.name;
+                    
+                    if (data.user.role === 'admin') {
+                        navigateTo('screen-admin');
+                    } else {
+                        navigateTo('screen-home');
+                    }
+                } else {
+                    alert(data.erro);
+                }
+            } catch (error) {
+                alert('Erro ao conectar com o servidor.');
+            }
+        }
+
+        async function fazerCadastro(event) {
+            event.preventDefault();
+            const name = document.getElementById('register-name').value;
+            const phone = document.getElementById('register-phone').value;
+            const password = document.getElementById('register-password').value;
+
+            try {
+                const response = await fetch(`${API_URL}/auth/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, phone, password })
+                });
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('Cadastro realizado! Faça o seu login.');
+                    document.getElementById('login-phone').value = phone;
+                    navigateTo('screen-login');
+                } else {
+                    alert(data.erro);
+                }
+            } catch (error) {
+                alert('Erro ao conectar com o servidor.');
+            }
+        }
+
+        function fazerLogout() {
+            localStorage.removeItem('barbearia_token');
+            localStorage.removeItem('barbearia_userName');
+            document.getElementById('login-password').value = '';
+            navigateTo('screen-login');
+        }
+
+        document.getElementById('form-login').addEventListener('submit', fazerLogin);
+        document.getElementById('form-register').addEventListener('submit', fazerCadastro);
+
+        // 2. NAVEGAÇÃO E ESTADO DO FRONT-END
+        let appState = { service: null, date: null, time: null };
+
         function navigateTo(screenId) {
             document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
             document.getElementById(screenId).classList.add('active');
             
-            // Lógica específica ao entrar na tela
             if(screenId === 'screen-services') renderServices();
             if(screenId === 'screen-datetime') renderDateTime();
+            if(screenId === 'screen-admin') carregarAgendaBarbeiro();
         }
 
-        // Renderiza lista de serviços
-        function renderServices() {
+        // 3. AGENDAMENTO CLIENTE
+        async function renderServices() {
             const list = document.getElementById('service-list');
-            list.innerHTML = '';
-            
-            services.forEach(svc => {
-                const isSelected = appState.service?.id === svc.id;
-                const card = document.createElement('div');
-                card.className = `p-4 rounded-xl border cursor-pointer transition-all flex justify-between items-center ${isSelected ? 'bg-zinc-800 border-brand-500' : 'bg-zinc-900 border-zinc-800 hover:border-zinc-600'}`;
-                card.onclick = () => selectService(svc);
-                
-                card.innerHTML = `
-                    <div>
-                        <h4 class="font-bold text-white text-lg">${svc.name}</h4>
-                        <p class="text-sm text-zinc-400"><i class="ph ph-clock mr-1"></i> ${svc.duration} min</p>
-                    </div>
-                    <div class="text-right">
-                        <span class="text-brand-500 font-bold">R$ ${svc.price.toFixed(2)}</span>
-                    </div>
-                `;
-                list.appendChild(card);
-            });
-            updateButtons();
+            list.innerHTML = '<p class="text-zinc-400 text-center text-sm py-4">A procurar serviços...</p>';
+
+            try {
+                const response = await fetch(`${API_URL}/services`);
+                const servicesDB = await response.json();
+                list.innerHTML = ''; 
+
+                servicesDB.forEach(svc => {
+                    const isSelected = appState.service?.id === svc.id;
+                    const card = document.createElement('div');
+                    card.className = `p-4 rounded-xl border cursor-pointer transition-all flex justify-between items-center ${isSelected ? 'bg-zinc-800 border-brand-500' : 'bg-zinc-900 border-zinc-800 hover:border-zinc-700'}`;
+                    card.onclick = () => { appState.service = svc; renderServices(); };
+                    
+                    card.innerHTML = `
+                        <div>
+                            <h4 class="font-bold text-white text-lg">${svc.name}</h4>
+                            <p class="text-sm text-zinc-400"><i class="ph ph-clock mr-1"></i> ${svc.duration_mins} min</p>
+                        </div>
+                        <div class="text-brand-500 font-bold">R$ ${Number(svc.price).toFixed(2)}</div>
+                    `;
+                    list.appendChild(card);
+                });
+                updateButtons();
+            } catch (error) {
+                list.innerHTML = '<p class="text-red-500 text-center text-sm py-4">Erro ao carregar serviços.</p>';
+            }
         }
 
-        function selectService(svc) {
-            appState.service = svc;
-            renderServices(); // Re-renderiza para atualizar classes ativas
-        }
-
-        // Renderiza Datas e Horários
         function renderDateTime() {
             const dateList = document.getElementById('date-list');
             const timeList = document.getElementById('time-list');
-            dateList.innerHTML = '';
-            timeList.innerHTML = '';
+            if(!dateList) return;
+            
+            dateList.innerHTML = ''; 
+            if(timeList && !appState.date) {
+                timeList.innerHTML = '<p class="text-zinc-500 text-sm col-span-3 text-center py-2">Selecione um dia primeiro</p>';
+            }
 
-            // Renderiza Chips de Data
-            dates.forEach(d => {
-                const isSelected = appState.date?.day === d.day;
-                const btn = document.createElement('button');
-                btn.className = `min-w-[70px] h-[80px] rounded-xl flex flex-col items-center justify-center border transition-all ${isSelected ? 'bg-brand-500 border-brand-500 text-zinc-950' : 'bg-zinc-900 border-zinc-800 text-zinc-400'}`;
-                btn.onclick = () => { appState.date = d; appState.time = null; renderDateTime(); };
+            // Usamos Novembro de 2026 como base do calendário
+            const ano = 2026;
+            const mes = 10; // Novembro (0 a 11 em JS)
+            
+            const primeiroDiaSemana = new Date(ano, mes, 1).getDay(); 
+            const diasNoMes = new Date(ano, mes + 1, 0).getDate();
+
+            // 1. Espaços vazios para alinhar o primeiro dia do mês na coluna correta da semana
+            for (let i = 0; i < primeiroDiaSemana; i++) {
+                dateList.innerHTML += `<div class="h-10"></div>`;
+            }
+
+            // 2. Desenha os dias do mês em formato de mini botões de grelha
+            for (let dia = 1; dia <= diasNoMes; dia++) {
+                const diaStr = String(dia).padStart(2, '0');
+                const dataISO = `2026-11-${diaStr}`;
                 
-                btn.innerHTML = `
-                    <span class="text-xs font-medium uppercase mb-1">${d.weekday}</span>
-                    <span class="text-2xl font-bold">${d.day}</span>
-                `;
+                const isSelected = appState.date === dataISO;
+                
+                const btn = document.createElement('button');
+                btn.type = "button";
+                btn.className = `h-10 rounded-lg flex items-center justify-center text-sm font-semibold transition-all ${
+                    isSelected 
+                    ? 'bg-brand-500 text-zinc-950 font-bold shadow-lg shadow-brand-500/20 scale-105' 
+                    : 'bg-zinc-800/60 text-zinc-300 hover:bg-zinc-700 hover:text-white border border-zinc-700/50'
+                }`;
+
+                btn.onclick = () => {
+                    appState.date = dataISO;
+                    appState.time = null;
+                    renderDateTime(); 
+                    buscarHorariosLivres(dataISO);
+                    updateButtons();
+                };
+
+                btn.innerText = dia;
                 dateList.appendChild(btn);
-            });
+            }
 
-            // Renderiza Chips de Hora
-            times.forEach(t => {
-                const isSelected = appState.time === t;
-                const isDisabled = !appState.date; // Bloqueia horas se não tiver data
-                const btn = document.createElement('button');
-                btn.className = `h-12 rounded-lg font-medium border transition-all ${isSelected ? 'bg-brand-500 border-brand-500 text-zinc-950' : (isDisabled ? 'bg-zinc-900/50 border-zinc-800/50 text-zinc-600 opacity-50' : 'bg-zinc-900 border-zinc-800 text-zinc-300 hover:border-zinc-500')}`;
-                btn.disabled = isDisabled;
-                btn.onclick = () => { appState.time = t; renderDateTime(); };
+            // 3. Renderiza horários livres se houver data selecionada
+            if (appState.date && timeList) {
+                timeList.innerHTML = '';
+                if (availableTimes.length === 0) {
+                    timeList.innerHTML = '<p class="text-zinc-500 text-sm col-span-3 text-center py-2">Nenhum horário livre neste dia</p>';
+                } else {
+                    availableTimes.forEach(t => {
+                        const isSelected = appState.time === t;
+                        const btn = document.createElement('button');
+                        btn.className = `h-12 rounded-lg font-medium border ${isSelected ? 'bg-brand-500 border-brand-500 text-zinc-950 font-bold' : 'bg-zinc-900 border-zinc-800 text-zinc-300 hover:border-zinc-700'}`;
+                        btn.onclick = () => { appState.time = t; renderDateTime(); updateButtons(); };
+                        btn.innerText = t;
+                        timeList.appendChild(btn);
+                    });
+                }
+            }
+        }
+
+        async function buscarHorariosLivres(dataISO) {
+            const token = localStorage.getItem('barbearia_token');
+            const timeList = document.getElementById('time-list');
+            if(!timeList) return;
+            
+            timeList.innerHTML = '<p class="text-zinc-400 text-xs col-span-3 text-center py-2">A procurar horários...</p>';
+
+            try {
+                const response = await fetch(`${API_URL}/availability?date=${dataISO}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
                 
-                btn.innerText = t;
-                timeList.appendChild(btn);
-            });
-
-            updateButtons();
+                if (response.ok) {
+                    availableTimes = await response.json();
+                    renderDateTime();
+                } else {
+                    timeList.innerHTML = '<p class="text-red-500 text-xs col-span-3 text-center py-2">Erro ao carregar</p>';
+                }
+            } catch (error) {
+                timeList.innerHTML = '<p class="text-red-500 text-xs col-span-3 text-center py-2">Erro de conexão</p>';
+            }
         }
 
-        // Habilita/Desabilita os botões de avançar baseados no estado
         function updateButtons() {
-            // Tela Serviços
             const btnSvc = document.getElementById('btn-next-datetime');
-            if(appState.service) {
-                btnSvc.disabled = false;
-                btnSvc.className = "w-full h-14 bg-brand-500 hover:bg-brand-600 text-zinc-950 font-bold rounded-xl transition-colors text-lg flex items-center justify-center";
+            if(btnSvc) {
+                btnSvc.disabled = !appState.service;
+                btnSvc.className = appState.service ? "w-full h-14 bg-brand-500 text-zinc-950 font-bold rounded-xl transition-colors text-lg flex items-center justify-center" : "w-full h-14 bg-zinc-800 text-zinc-500 font-bold rounded-xl transition-colors text-lg flex items-center justify-center opacity-50 cursor-not-allowed";
             }
-
-            // Tela DateTime
             const btnDt = document.getElementById('btn-next-confirm');
-            if(appState.date && appState.time) {
-                btnDt.disabled = false;
-                btnDt.className = "w-full h-14 bg-brand-500 hover:bg-brand-600 text-zinc-950 font-bold rounded-xl transition-colors text-lg flex items-center justify-center";
-            } else {
-                btnDt.disabled = true;
-                btnDt.className = "w-full h-14 bg-zinc-800 text-zinc-500 font-bold rounded-xl transition-colors text-lg flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed";
+            if(btnDt) {
+                const ready = appState.date && appState.time;
+                btnDt.disabled = !ready;
+                btnDt.className = ready ? "w-full h-14 bg-brand-500 text-zinc-950 font-bold rounded-xl transition-colors text-lg flex items-center justify-center" : "w-full h-14 bg-zinc-800 text-zinc-500 font-bold rounded-xl transition-colors text-lg flex items-center justify-center opacity-50 cursor-not-allowed";
             }
         }
 
-        // Prepara dados para a tela de confirmação
         function prepareConfirmation() {
             document.getElementById('conf-service-name').innerText = appState.service.name;
-            document.getElementById('conf-date').innerText = `${appState.date.weekday}, ${appState.date.day} Nov`;
-            document.getElementById('conf-time').innerText = appState.time;
-            document.getElementById('conf-duration').innerText = `${appState.service.duration} min`;
-            document.getElementById('conf-price').innerText = `R$ ${appState.service.price.toFixed(2)}`;
             
-            // Reseta visualizações de sucesso (caso o usuário tenha vindo e voltado)
+            // Formata a data ISO para exibição bonita (Ex: "15 de Novembro")
+            const [ano, mes, dia] = appState.date.split('-');
+            const dataObj = new Date(ano, mes - 1, dia);
+            const nomeSemana = dataObj.toLocaleDateString('pt-BR', { weekday: 'long' });
+            document.getElementById('conf-date').innerText = `${nomeSemana}, ${dia} Nov`;
+            
+            document.getElementById('conf-time').innerText = appState.time;
+            
+            const precoFormatado = Number(appState.service.price).toFixed(2);
+            document.getElementById('conf-price').innerText = `R$ ${precoFormatado}`;
+            
             document.getElementById('confirm-box').classList.remove('hidden');
             document.getElementById('confirm-footer').classList.remove('hidden');
             document.getElementById('success-box').classList.add('hidden');
             document.getElementById('success-footer').classList.add('hidden');
-
+            
             navigateTo('screen-confirm');
         }
 
-        // Simula o POST para a API e sucesso
-        function finishAppointment() {
-            // Oculta resumo, mostra sucesso
-            document.getElementById('confirm-box').classList.add('hidden');
-            document.getElementById('confirm-footer').classList.add('hidden');
-            
-            document.getElementById('success-box').classList.remove('hidden');
-            document.getElementById('success-box').classList.add('flex'); // Precisa do flex
-            document.getElementById('success-footer').classList.remove('hidden');
+        async function finishAppointment() {
+            const token = localStorage.getItem('barbearia_token');
+            if (!token) {
+                alert('Sessão expirada. Faça login novamente.');
+                fazerLogout();
+                return;
+            }
+
+            const dataMySQL = `${appState.date} ${appState.time}:00`;
+
+            const btnConfirm = document.querySelector('#confirm-footer button');
+            const originalText = btnConfirm.innerHTML;
+            btnConfirm.innerHTML = 'A agendar...';
+            btnConfirm.disabled = true;
+
+            try {
+                const response = await fetch(`${API_URL}/appointments`, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}` 
+                    },
+                    body: JSON.stringify({ 
+                        service_id: appState.service.id, 
+                        start_time: dataMySQL 
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    document.getElementById('confirm-box').classList.add('hidden');
+                    document.getElementById('confirm-footer').classList.add('hidden');
+                    
+                    document.getElementById('success-box').classList.remove('hidden');
+                    document.getElementById('success-box').classList.add('flex');
+                    document.getElementById('success-footer').classList.remove('hidden');
+                } else {
+                    alert(data.erro);
+                    btnConfirm.innerHTML = originalText;
+                    btnConfirm.disabled = false;
+                }
+            } catch (error) {
+                alert('Erro ao conectar com o servidor.');
+                btnConfirm.innerHTML = originalText;
+                btnConfirm.disabled = false;
+            }
         }
 
-        // Volta para a Home limpando os dados
         function resetToHome() {
             appState = { service: null, date: null, time: null };
+            availableTimes = [];
             navigateTo('screen-home');
         }
 
-        // Init App (Mock pre-preenchimento no celular)
-        document.getElementById('phone').value = "(11) 98765-4321";
-        document.getElementById('password').value = "123456";
+        // ==========================================
+        // 4. PAINEL DO BARBEIRO (CALENDÁRIO GRID)
+        // ==========================================
+        let dataCalendario = new Date(2026, 10, 1);
 
+        function mudarMes(direcao) {
+            dataCalendario.setMonth(dataCalendario.getMonth() + direcao);
+            carregarAgendaBarbeiro();
+        }
+
+        async function carregarAgendaBarbeiro() {
+            const token = localStorage.getItem('barbearia_token');
+            const grid = document.getElementById('calendario-grid');
+            
+            if (!token) return;
+
+            grid.innerHTML = '<div class="col-span-7 text-center text-brand-500 font-medium py-10">A montar calendário...</div>';
+
+            try {
+                const response = await fetch(`${API_URL}/admin/appointments`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const agendamentos = await response.json();
+
+                if (response.ok) {
+                    renderizarCalendario(agendamentos);
+                } else {
+                    grid.innerHTML = `<div class="col-span-7 text-center text-red-500 py-10">${agendamentos.erro}</div>`;
+                }
+            } catch (error) {
+                grid.innerHTML = '<div class="col-span-7 text-center text-red-500 py-10">Erro ao conectar com o servidor.</div>';
+            }
+        }
+
+        function renderizarCalendario(agendamentos) {
+            const grid = document.getElementById('calendario-grid');
+            grid.innerHTML = '';
+            
+            const mes = dataCalendario.getMonth();
+            const ano = dataCalendario.getFullYear();
+            
+            const nomeMes = new Intl.DateTimeFormat('pt-BR', { month: 'long', year: 'numeric' }).format(dataCalendario);
+            document.getElementById('mes-atual').innerText = nomeMes;
+
+            const primeiroDia = new Date(ano, mes, 1).getDay(); 
+            const diasNoMes = new Date(ano, mes + 1, 0).getDate();
+
+            for (let i = 0; i < primeiroDia; i++) {
+                grid.innerHTML += `<div class="bg-zinc-900/30 rounded-lg min-h-[120px] border border-zinc-800/30"></div>`;
+            }
+
+            for (let dia = 1; dia <= diasNoMes; dia++) {
+                const agendamentosDoDia = agendamentos.filter(ag => {
+                    const dataAg = new Date(ag.start_time);
+                    return dataAg.getUTCDate() === dia && dataAg.getUTCMonth() === mes && dataAg.getUTCFullYear() === ano;
+                });
+
+                let htmlAgendamentos = '';
+                agendamentosDoDia.forEach(ag => {
+                    const stringLimpa = (ag.start_time || '').replace('T', ' ');
+                    const hora = stringLimpa.length >= 16 ? stringLimpa.substring(11, 16) : '00:00';
+                
+                    htmlAgendamentos += `
+                        <div class="group relative bg-zinc-800 hover:bg-zinc-700 p-1.5 mb-1.5 rounded border-l-2 border-brand-500 text-xs text-left shadow transition-colors" title="${ag.service_name}">
+                            <span class="text-brand-500 font-bold mr-1">${hora}</span>
+                            <span class="text-white font-medium truncate block mt-0.5">${ag.client_name}</span>
+                            <span class="text-zinc-400 text-[10px] uppercase tracking-wide truncate block mt-0.5">${ag.service_name}</span>
+                            
+                            <div class="hidden group-hover:flex absolute top-1 right-1 bg-zinc-900 border border-zinc-700 rounded shadow-lg overflow-hidden">
+                                <button onclick="abrirModalEditar(${ag.id}, '${ag.start_time}', ${ag.service_id})" class="p-1.5 text-zinc-400 hover:text-brand-500 hover:bg-zinc-800 transition-colors" title="Editar"><i class="ph-fill ph-pencil-simple"></i></button>
+                                <button onclick="excluirAgendamento(${ag.id})" class="p-1.5 text-zinc-400 hover:text-red-500 hover:bg-zinc-800 transition-colors border-l border-zinc-700" title="Cancelar"><i class="ph-fill ph-trash"></i></button>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                const hoje = new Date();
+                const isHoje = (dia === hoje.getDate() && mes === hoje.getMonth() && ano === hoje.getFullYear());
+                const classeTextoDia = isHoje ? 'text-brand-500 font-bold bg-brand-500/10 px-2 py-0.5 rounded inline-block' : 'text-zinc-500 font-medium';
+                const classeBordaQuad = isHoje ? 'border-brand-500/50' : 'border-zinc-800';
+
+                grid.innerHTML += `
+                    <div class="bg-zinc-900 rounded-lg min-h-[130px] border ${classeBordaQuad} p-2 flex flex-col transition-all hover:border-zinc-600">
+                        <div class="text-right mb-2 text-sm"><span class="${classeTextoDia}">${dia}</span></div>
+                        <div class="flex-1 overflow-y-auto no-scrollbar">
+                            ${htmlAgendamentos}
+                        </div>
+                    </div>
+                `;
+            }
+        }
+        
+        // ==========================================
+        // 5. LÓGICA DE GESTÃO (EDITAR/EXCLUIR)
+        // ==========================================
+        async function excluirAgendamento(id) {
+            if (!confirm('Tem a certeza que deseja cancelar este horário?')) return;
+            
+            const token = localStorage.getItem('barbearia_token');
+            try {
+                const res = await fetch(`${API_URL}/admin/appointments/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (res.ok) carregarAgendaBarbeiro();
+                else alert('Erro ao excluir agendamento.');
+            } catch (e) { alert('Erro de conexão com a API.'); }
+        }
+
+        let dataOriginalEdicao = ''; 
+
+        function abrirModalEditar(id, dataCompletaISO, serviceId) {
+            const modal = document.getElementById('modal-editar');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            
+            document.getElementById('edit-id').value = id;
+            document.getElementById('edit-service').value = serviceId || 1;
+            
+            const limpa = dataCompletaISO.replace('T', ' ');
+            const partes = limpa.split(' ');
+            
+            dataOriginalEdicao = partes[0]; 
+            const horaMinuto = partes[1].substring(0, 5); 
+            
+            document.getElementById('edit-time').value = horaMinuto;
+        }
+
+        async function salvarEdicao() {
+            const id = document.getElementById('edit-id').value;
+            const serviceId = document.getElementById('edit-service').value;
+            const novaHora = document.getElementById('edit-time').value; 
+            
+            const dataFinalMySQL = `${dataOriginalEdicao} ${novaHora}:00`;
+            const token = localStorage.getItem('barbearia_token');
+
+            try {
+                const res = await fetch(`${API_URL}/admin/appointments/${id}`, {
+                    method: 'PUT',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}` 
+                    },
+                    body: JSON.stringify({ service_id: serviceId, start_time: dataFinalMySQL })
+                });
+                
+                if (res.ok) {
+                    fecharModal();
+                    carregarAgendaBarbeiro();
+                } else {
+                    const error = await res.json();
+                    alert(error.erro);
+                }
+            } catch (e) { alert('Erro de conexão com a API.'); }
+        }
+
+        function fecharModal() {
+            const modal = document.getElementById('modal-editar');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
     </script>
 </body>
 </html>
