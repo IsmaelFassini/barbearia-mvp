@@ -62,7 +62,7 @@
                     </button>
                 </form>
 
-                <div class="text-center mb-4">
+                <div class="text-center mb-4 mt-6">
                     <button type="button" onclick="navigateTo('screen-register')" class="text-sm text-brand-500 font-medium hover:underline underline-offset-4">
                         Não tem conta? Cadastre-se
                     </button>
@@ -160,14 +160,24 @@
             </header>
             <div class="flex-1 overflow-y-auto">
                 <div class="p-4 border-b border-zinc-800">
-    <h3 class="text-sm font-medium text-zinc-400 mb-3">Selecione o Dia</h3>
-    <!-- Cabeçalho dos dias da semana -->
-    <div class="grid grid-cols-7 gap-1 text-center font-bold text-zinc-500 text-xs uppercase mb-2">
-        <div>Dom</div><div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div>Sáb</div>
-    </div>
-    <!-- Grelha do calendário do cliente -->
-    <div class="grid grid-cols-7 gap-1.5" id="date-list"></div>
-</div>
+                    
+                    <!-- Cabeçalho do Calendário com Navegação -->
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-sm font-medium text-zinc-400">Selecione o Dia</h3>
+                        <div class="flex items-center gap-2">
+                            <button onclick="mudarMesCliente(-1)" class="text-zinc-400 hover:text-white p-1">&lt;</button>
+                            <span id="mes-atual-cliente" class="text-amber-500 font-bold capitalize w-32 text-center text-sm"></span>
+                            <button onclick="mudarMesCliente(1)" class="text-zinc-400 hover:text-white p-1">&gt;</button>
+                        </div>
+                    </div>
+
+                    <!-- Dias da semana -->
+                    <div class="grid grid-cols-7 gap-1 text-center font-bold text-zinc-500 text-[10px] uppercase mb-2">
+                        <div>Dom</div><div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div>Sáb</div>
+                    </div>
+                    <!-- Grelha do calendário -->
+                    <div class="grid grid-cols-7 gap-1.5" id="date-list"></div>
+                </div>
                 <div class="p-4">
                     <h3 class="text-sm font-medium text-zinc-400 mb-3">Horários Livres</h3>
                     <div class="grid grid-cols-3 gap-3" id="time-list"></div>
@@ -194,25 +204,23 @@
                         <i class="ph-fill ph-scissors text-brand-500 text-2xl"></i>
                         <h3 class="text-xl font-bold" id="conf-service-name">Serviço</h3>
                     </div>
+                    
+                    <!-- Resumo restaurado -->
                     <div class="space-y-4">
-                        <div class="flex justify-between items-center mb-4">
-    <h3 class="text-zinc-400 font-medium">Selecione o Dia</h3>
-    <div class="flex items-center gap-3">
-        <!-- Botão Voltar -->
-        <button id="btn-mes-anterior" class="text-zinc-400 hover:text-white p-1">
-            &lt; <!-- Símbolo de menor que (<) -->
-        </button>
-        
-        <!-- Nome do Mês e Ano -->
-        <span id="mes-atual" class="text-amber-500 font-bold capitalize w-32 text-center"></span>
-        
-        <!-- Botão Avançar -->
-        <button id="btn-mes-seguinte" class="text-zinc-400 hover:text-white p-1">
-            &gt; <!-- Símbolo de maior que (>) -->
-        </button>
-    </div>
-</div>
+                        <div class="flex justify-between items-center border-b border-zinc-700 pb-3">
+                            <span class="text-zinc-400">Data</span>
+                            <span class="text-white font-medium" id="conf-date">Carregando...</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-zinc-700 pb-3">
+                            <span class="text-zinc-400">Horário</span>
+                            <span class="text-white font-medium" id="conf-time">Carregando...</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-zinc-400">Valor Estimado</span>
+                            <span class="text-brand-500 font-bold text-xl" id="conf-price">R$ 0,00</span>
+                        </div>
                     </div>
+
                 </div>
                 <div id="success-box" class="hidden flex-col items-center text-center w-full">
                     <div class="w-20 h-20 bg-brand-500 rounded-full flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(245,158,11,0.3)]">
@@ -234,21 +242,19 @@
             </div>
         </section>
 
-        <!-- 6. PAINEL ADMIN (VISÃO BARBEIRO - TELA CHEIA PARA PC) -->
+        <!-- 6. PAINEL ADMIN -->
         <section id="screen-admin" class="screen flex-col h-full w-full bg-zinc-950 fixed inset-0 z-50 overflow-hidden">
             <header class="p-6 bg-zinc-900 border-b border-zinc-800 flex justify-between items-center shadow-md">
                 <div>
                     <p class="text-sm text-brand-500 font-medium uppercase tracking-wider">Painel de Gestão</p>
-                    <h2 class="text-2xl font-bold text-white capitalize" id="mes-atual">Carregando...</h2>
+                    <h2 class="text-2xl font-bold text-white capitalize" id="mes-atual-admin">Carregando...</h2>
                 </div>
                 <div class="flex items-center gap-4">
-                    <!-- Controles para navegar pelos meses -->
                     <div class="flex bg-zinc-800 rounded-lg overflow-hidden border border-zinc-700">
-                        <button onclick="mudarMes(-1)" class="px-4 py-2 hover:bg-zinc-700 text-white transition-colors"><i class="ph-bold ph-caret-left"></i></button>
-                        <button onclick="dataCalendario = new Date(2026, 10, 1); carregarAgendaBarbeiro();" class="px-4 py-2 hover:bg-zinc-700 text-white font-medium border-x border-zinc-700 transition-colors">Hoje</button>
-                        <button onclick="mudarMes(1)" class="px-4 py-2 hover:bg-zinc-700 text-white transition-colors"><i class="ph-bold ph-caret-right"></i></button>
+                        <button onclick="mudarMesAdmin(-1)" class="px-4 py-2 hover:bg-zinc-700 text-white transition-colors"><i class="ph-bold ph-caret-left"></i></button>
+                        <button onclick="dataCalendario = new Date(); carregarAgendaBarbeiro();" class="px-4 py-2 hover:bg-zinc-700 text-white font-medium border-x border-zinc-700 transition-colors">Hoje</button>
+                        <button onclick="mudarMesAdmin(1)" class="px-4 py-2 hover:bg-zinc-700 text-white transition-colors"><i class="ph-bold ph-caret-right"></i></button>
                     </div>
-                    <!-- Botão de Sair -->
                     <button onclick="navigateTo('screen-login')" class="w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center text-red-500 hover:bg-red-500 hover:text-white transition-all ml-4">
                         <i class="ph ph-sign-out text-xl"></i>
                     </button>
@@ -256,17 +262,13 @@
             </header>
             
             <div class="flex-1 p-6 overflow-y-auto">
-                <!-- Cabeçalho dos Dias da Semana -->
                 <div class="grid grid-cols-7 gap-4 mb-2 text-center font-bold text-zinc-400 text-sm uppercase">
                     <div>Dom</div><div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div>Sáb</div>
                 </div>
-                <!-- Grid do Calendário de 7 Colunas -->
-                <div id="calendario-grid" class="grid grid-cols-7 gap-4 auto-rows-fr">
-                    <!-- As células dos dias serão geradas pelo JavaScript -->
-                </div>
+                <div id="calendario-grid" class="grid grid-cols-7 gap-4 auto-rows-fr"></div>
             </div>
             
-            <!-- Modal de Edição (Invisível por padrão) -->
+            <!-- Modal de Edição -->
             <div id="modal-editar" class="hidden fixed inset-0 bg-black/80 z-[60] items-center justify-center p-4 backdrop-blur-sm">
                 <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-6 w-full max-w-sm shadow-2xl">
                     <h3 class="text-xl font-bold text-white mb-4">Editar Agendamento</h3>
@@ -300,11 +302,21 @@
     <!-- Script de Lógica do SPA, UI e Conexão com API -->
     <script>
         const API_URL = 'https://barbearia-mvp-a0uf.onrender.com/api';
-
-        // Variável global para armazenar os horários livres buscados na API
         let availableTimes = [];
+        let appState = { service: null, date: null, time: null };
+        let dataCalendario = new Date(); // Memória global do calendário para ambas as telas
 
-        // 1. AUTENTICAÇÃO
+        // 1. NAVEGAÇÃO E ESTADO DO FRONT-END
+        function navigateTo(screenId) {
+            document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+            
+            if(screenId === 'screen-services') renderServices();
+            if(screenId === 'screen-datetime') renderDateTime();
+            if(screenId === 'screen-admin') carregarAgendaBarbeiro();
+        }
+
+        // 2. AUTENTICAÇÃO
         async function fazerLogin(event) {
             event.preventDefault();
             const phone = document.getElementById('login-phone').value;
@@ -321,20 +333,14 @@
                 if (response.ok) {
                     localStorage.setItem('barbearia_token', data.token);
                     localStorage.setItem('barbearia_userName', data.user.name);
-                    
                     document.getElementById('home-user-name').innerText = data.user.name;
                     
-                    if (data.user.role === 'admin') {
-                        navigateTo('screen-admin');
-                    } else {
-                        navigateTo('screen-home');
-                    }
+                    if (data.user.role === 'admin') navigateTo('screen-admin');
+                    else navigateTo('screen-home');
                 } else {
                     alert(data.erro);
                 }
-            } catch (error) {
-                alert('Erro ao conectar com o servidor.');
-            }
+            } catch (error) { alert('Erro ao conectar com o servidor.'); }
         }
 
         async function fazerCadastro(event) {
@@ -355,12 +361,8 @@
                     alert('Cadastro realizado! Faça o seu login.');
                     document.getElementById('login-phone').value = phone;
                     navigateTo('screen-login');
-                } else {
-                    alert(data.erro);
-                }
-            } catch (error) {
-                alert('Erro ao conectar com o servidor.');
-            }
+                } else { alert(data.erro); }
+            } catch (error) { alert('Erro ao conectar com o servidor.'); }
         }
 
         function fazerLogout() {
@@ -372,18 +374,6 @@
 
         document.getElementById('form-login').addEventListener('submit', fazerLogin);
         document.getElementById('form-register').addEventListener('submit', fazerCadastro);
-
-        // 2. NAVEGAÇÃO E ESTADO DO FRONT-END
-        let appState = { service: null, date: null, time: null };
-
-        function navigateTo(screenId) {
-            document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
-            document.getElementById(screenId).classList.add('active');
-            
-            if(screenId === 'screen-services') renderServices();
-            if(screenId === 'screen-datetime') renderDateTime();
-            if(screenId === 'screen-admin') carregarAgendaBarbeiro();
-        }
 
         // 3. AGENDAMENTO CLIENTE
         async function renderServices() {
@@ -411,9 +401,12 @@
                     list.appendChild(card);
                 });
                 updateButtons();
-            } catch (error) {
-                list.innerHTML = '<p class="text-red-500 text-center text-sm py-4">Erro ao carregar serviços.</p>';
-            }
+            } catch (error) { list.innerHTML = '<p class="text-red-500 text-center text-sm py-4">Erro ao carregar.</p>'; }
+        }
+
+        function mudarMesCliente(direcao) {
+            dataCalendario.setMonth(dataCalendario.getMonth() + direcao);
+            renderDateTime(); // Recarrega os dias
         }
 
         function renderDateTime() {
@@ -421,36 +414,36 @@
             const timeList = document.getElementById('time-list');
             if(!dateList) return;
             
+            // Atualiza o Título do Mês no topo da grelha
+            const textoMes = dataCalendario.toLocaleString('pt-BR', { month: 'long', year: 'numeric' });
+            document.getElementById('mes-atual-cliente').textContent = textoMes;
+
             dateList.innerHTML = ''; 
             if(timeList && !appState.date) {
                 timeList.innerHTML = '<p class="text-zinc-500 text-sm col-span-3 text-center py-2">Selecione um dia primeiro</p>';
             }
 
-            // Usamos Novembro de 2026 como base do calendário
-            const ano = 2026;
-            const mes = 10; // Novembro (0 a 11 em JS)
+            const ano = dataCalendario.getFullYear();
+            const mes = dataCalendario.getMonth();
             
             const primeiroDiaSemana = new Date(ano, mes, 1).getDay(); 
             const diasNoMes = new Date(ano, mes + 1, 0).getDate();
 
-            // 1. Espaços vazios para alinhar o primeiro dia do mês na coluna correta da semana
             for (let i = 0; i < primeiroDiaSemana; i++) {
                 dateList.innerHTML += `<div class="h-10"></div>`;
             }
 
-            // 2. Desenha os dias do mês em formato de mini botões de grelha
             for (let dia = 1; dia <= diasNoMes; dia++) {
                 const diaStr = String(dia).padStart(2, '0');
-                const dataISO = `2026-11-${diaStr}`;
+                const mesStr = String(mes + 1).padStart(2, '0');
+                const dataISO = `${ano}-${mesStr}-${diaStr}`;
                 
                 const isSelected = appState.date === dataISO;
                 
                 const btn = document.createElement('button');
                 btn.type = "button";
                 btn.className = `h-10 rounded-lg flex items-center justify-center text-sm font-semibold transition-all ${
-                    isSelected 
-                    ? 'bg-brand-500 text-zinc-950 font-bold shadow-lg shadow-brand-500/20 scale-105' 
-                    : 'bg-zinc-800/60 text-zinc-300 hover:bg-zinc-700 hover:text-white border border-zinc-700/50'
+                    isSelected ? 'bg-brand-500 text-zinc-950 font-bold shadow-lg shadow-brand-500/20 scale-105' : 'bg-zinc-800/60 text-zinc-300 hover:bg-zinc-700 hover:text-white border border-zinc-700/50'
                 }`;
 
                 btn.onclick = () => {
@@ -465,7 +458,6 @@
                 dateList.appendChild(btn);
             }
 
-            // 3. Renderiza horários livres se houver data selecionada
             if (appState.date && timeList) {
                 timeList.innerHTML = '';
                 if (availableTimes.length === 0) {
@@ -498,12 +490,8 @@
                 if (response.ok) {
                     availableTimes = await response.json();
                     renderDateTime();
-                } else {
-                    timeList.innerHTML = '<p class="text-red-500 text-xs col-span-3 text-center py-2">Erro ao carregar</p>';
-                }
-            } catch (error) {
-                timeList.innerHTML = '<p class="text-red-500 text-xs col-span-3 text-center py-2">Erro de conexão</p>';
-            }
+                } else { timeList.innerHTML = '<p class="text-red-500 text-xs col-span-3 text-center py-2">Erro ao carregar</p>'; }
+            } catch (error) { timeList.innerHTML = '<p class="text-red-500 text-xs col-span-3 text-center py-2">Erro de conexão</p>'; }
         }
 
         function updateButtons() {
@@ -523,11 +511,12 @@
         function prepareConfirmation() {
             document.getElementById('conf-service-name').innerText = appState.service.name;
             
-            // Formata a data ISO para exibição bonita (Ex: "15 de Novembro")
             const [ano, mes, dia] = appState.date.split('-');
             const dataObj = new Date(ano, mes - 1, dia);
             const nomeSemana = dataObj.toLocaleDateString('pt-BR', { weekday: 'long' });
-            document.getElementById('conf-date').innerText = `${nomeSemana}, ${dia} Nov`;
+            
+            const mesesAbrev = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+            document.getElementById('conf-date').innerText = `${nomeSemana}, ${dia} ${mesesAbrev[mes - 1]}`;
             
             document.getElementById('conf-time').innerText = appState.time;
             
@@ -551,7 +540,6 @@
             }
 
             const dataMySQL = `${appState.date} ${appState.time}:00`;
-
             const btnConfirm = document.querySelector('#confirm-footer button');
             const originalText = btnConfirm.innerHTML;
             btnConfirm.innerHTML = 'A agendar...';
@@ -564,10 +552,7 @@
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}` 
                     },
-                    body: JSON.stringify({ 
-                        service_id: appState.service.id, 
-                        start_time: dataMySQL 
-                    })
+                    body: JSON.stringify({ service_id: appState.service.id, start_time: dataMySQL })
                 });
 
                 const data = await response.json();
@@ -600,38 +585,14 @@
         // ==========================================
         // 4. PAINEL DO BARBEIRO (CALENDÁRIO GRID)
         // ==========================================
-        // Variável global que guarda o mês que o cliente está a ver na tela
-let dataCalendario = new Date(); 
-
-// Função para atualizar o texto na tela
-function atualizarMesNaTela() {
-    // Pega o nome do mês e o ano (ex: "novembro de 2026")
-    const textoMes = dataCalendario.toLocaleString('pt-BR', { month: 'long', year: 'numeric' });
-    document.getElementById('mes-atual').textContent = textoMes;
-    
-    // IMPORTANTE: Aqui você deve chamar a sua função que desenha os botões dos dias (1 a 30).
-    // Exemplo: renderizarDias(dataCalendario);
-}
-
-// Lógica do botão "Voltar"
-document.getElementById('btn-mes-anterior').addEventListener('click', () => {
-    dataCalendario.setMonth(dataCalendario.getMonth() - 1);
-    atualizarMesNaTela();
-});
-
-// Lógica do botão "Avançar"
-document.getElementById('btn-mes-seguinte').addEventListener('click', () => {
-    dataCalendario.setMonth(dataCalendario.getMonth() + 1);
-    atualizarMesNaTela();
-});
-
-// Executa a primeira vez quando a página carrega
-atualizarMesNaTela();
+        function mudarMesAdmin(direcao) {
+            dataCalendario.setMonth(dataCalendario.getMonth() + direcao);
+            carregarAgendaBarbeiro();
+        }
 
         async function carregarAgendaBarbeiro() {
             const token = localStorage.getItem('barbearia_token');
             const grid = document.getElementById('calendario-grid');
-            
             if (!token) return;
 
             grid.innerHTML = '<div class="col-span-7 text-center text-brand-500 font-medium py-10">A montar calendário...</div>';
@@ -644,12 +605,8 @@ atualizarMesNaTela();
 
                 if (response.ok) {
                     renderizarCalendario(agendamentos);
-                } else {
-                    grid.innerHTML = `<div class="col-span-7 text-center text-red-500 py-10">${agendamentos.erro}</div>`;
-                }
-            } catch (error) {
-                grid.innerHTML = '<div class="col-span-7 text-center text-red-500 py-10">Erro ao conectar com o servidor.</div>';
-            }
+                } else { grid.innerHTML = `<div class="col-span-7 text-center text-red-500 py-10">${agendamentos.erro}</div>`; }
+            } catch (error) { grid.innerHTML = '<div class="col-span-7 text-center text-red-500 py-10">Erro ao conectar.</div>'; }
         }
 
         function renderizarCalendario(agendamentos) {
@@ -660,7 +617,7 @@ atualizarMesNaTela();
             const ano = dataCalendario.getFullYear();
             
             const nomeMes = new Intl.DateTimeFormat('pt-BR', { month: 'long', year: 'numeric' }).format(dataCalendario);
-            document.getElementById('mes-atual').innerText = nomeMes;
+            document.getElementById('mes-atual-admin').innerText = nomeMes;
 
             const primeiroDia = new Date(ano, mes, 1).getDay(); 
             const diasNoMes = new Date(ano, mes + 1, 0).getDate();
@@ -715,7 +672,6 @@ atualizarMesNaTela();
         // ==========================================
         async function excluirAgendamento(id) {
             if (!confirm('Tem a certeza que deseja cancelar este horário?')) return;
-            
             const token = localStorage.getItem('barbearia_token');
             try {
                 const res = await fetch(`${API_URL}/admin/appointments/${id}`, {
@@ -728,7 +684,6 @@ atualizarMesNaTela();
         }
 
         let dataOriginalEdicao = ''; 
-
         function abrirModalEditar(id, dataCompletaISO, serviceId) {
             const modal = document.getElementById('modal-editar');
             modal.classList.remove('hidden');
@@ -750,7 +705,6 @@ atualizarMesNaTela();
             const id = document.getElementById('edit-id').value;
             const serviceId = document.getElementById('edit-service').value;
             const novaHora = document.getElementById('edit-time').value; 
-            
             const dataFinalMySQL = `${dataOriginalEdicao} ${novaHora}:00`;
             const token = localStorage.getItem('barbearia_token');
 
