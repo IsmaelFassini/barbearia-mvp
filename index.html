@@ -261,12 +261,16 @@
                 </div>
             </header>
             
-            <div class="flex-1 p-6 overflow-y-auto">
-                <div class="grid grid-cols-7 gap-4 mb-2 text-center font-bold text-zinc-400 text-sm uppercase">
-                    <div>Dom</div><div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div>Sáb</div>
-                </div>
-                <div id="calendario-grid" class="grid grid-cols-7 gap-4 auto-rows-fr"></div>
-            </div>
+            <!-- Área principal com scroll automático (horizontal e vertical) -->
+<div class="flex-1 p-6 overflow-auto">
+    <!-- Esta div obriga o calendário a ter no mínimo 800px, protegendo o formato quadrado -->
+    <div class="min-w-[800px]">
+        <div class="grid grid-cols-7 gap-4 mb-2 text-center font-bold text-zinc-400 text-sm uppercase">
+            <div>Dom</div><div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div>Sáb</div>
+        </div>
+        <div id="calendario-grid" class="grid grid-cols-7 gap-4 auto-rows-fr"></div>
+    </div>
+</div>
             
             <!-- Modal de Edição -->
             <div id="modal-editar" class="hidden fixed inset-0 bg-black/80 z-[60] items-center justify-center p-4 backdrop-blur-sm">
