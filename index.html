@@ -644,8 +644,8 @@
                     htmlAgendamentos += `
                         <div class="group relative bg-zinc-800 hover:bg-zinc-700 p-1.5 mb-1.5 rounded border-l-2 border-brand-500 text-xs text-left shadow transition-colors" title="${ag.service_name}">
                             <span class="text-brand-500 font-bold mr-1">${hora}</span>
-                            <span class="text-white font-medium truncate block mt-0.5">${ag.client_name}</span>
-                            <span class="text-zinc-400 text-[10px] uppercase tracking-wide truncate block mt-0.5">${ag.service_name}</span>
+                            <span class="text-white font-medium break-words block mt-0.5">${ag.client_name}</span>
+                            <span class="text-zinc-400 text-[10px] uppercase tracking-wide break-words block mt-0.5">${ag.service_name}</span>
                             
                             <div class="hidden group-hover:flex absolute top-1 right-1 bg-zinc-900 border border-zinc-700 rounded shadow-lg overflow-hidden">
                                 <button onclick="abrirModalEditar(${ag.id}, '${ag.start_time}', ${ag.service_id})" class="p-1.5 text-zinc-400 hover:text-brand-500 hover:bg-zinc-800 transition-colors" title="Editar"><i class="ph-fill ph-pencil-simple"></i></button>
@@ -661,7 +661,7 @@
                 const classeBordaQuad = isHoje ? 'border-brand-500/50' : 'border-zinc-800';
 
                 grid.innerHTML += `
-                    <div class="bg-zinc-900 rounded-lg min-h-[130px] border ${classeBordaQuad} p-2 flex flex-col transition-all hover:border-zinc-600">
+                    <div class="bg-zinc-900 rounded-lg min-h-[180px] border ${classeBordaQuad} p-2 flex flex-col transition-all hover:border-zinc-600">
                         <div class="text-right mb-2 text-sm"><span class="${classeTextoDia}">${dia}</span></div>
                         <div class="flex-1 overflow-y-auto no-scrollbar">
                             ${htmlAgendamentos}
