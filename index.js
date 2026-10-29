@@ -30,9 +30,14 @@ db.getConnection((err, connection) => {
     }
 });
 
-// 3. Rota de Teste (Endpoint base)
+const path = require('path');
+
+// Permite que o Node.js aceda a todos os ficheiros da pasta (CSS, imagens, etc.)
+app.use(express.static(__dirname)); 
+
+// Quando alguém entrar no site, entrega o ficheiro index.html
 app.get('/', (req, res) => {
-    res.status(200).json({ mensagem: 'API da Barbearia rodando perfeitamente!' });
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 // ==========================================
