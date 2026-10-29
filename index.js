@@ -236,13 +236,40 @@ app.get('/api/admin/appointments', verificarToken, (req, res) => {
 // ==========================================
 // 10. ROTA DE DISPONIBILIDADE (Horários Livres)
 // ==========================================
+// Função inteligente para gerar os horários automaticamente
+function gerarHorarios() {
+    const horarios = [];
+    let hora = 9;   // Hora de abertura (09:00)
+    let minuto = 0; 
+
+    // O loop continua enquanto a hora for menor que 19 (fecha às 19:00)
+    while (hora < 19) {
+        let horaFormatada = String(hora).padStart(2, '0');
+        let minutoFormatado = String(minuto).padStart(2, '0');
+        
+        horarios.push(`${horaFormatada}:${minutoFormatado}`);
+
+        minuto += 30; // Intervalo de 30 minutos
+        
+        if (minuto === 60) {
+            minuto = 0;
+            hora += 1;
+        }
+    }
+    
+    return horarios;
+}
+
+// ==========================================
+// 10. ROTA DE DISPONIBILIDADE (Horários Livres)
+// ==========================================
 app.get('/api/availability', verificarToken, (req, res) => {
     const { date } = req.query; // Pega a data que o Front-end enviou
 
     if (!date) return res.status(400).json({ erro: 'Data não fornecida.' });
 
-    // Todos os horários que a barbearia atende num dia normal
-    const todosHorarios = ['09:00', '09:45', '10:30', '11:15', '14:00', '14:45', '15:30', '16:15'];
+    // AQUI ESTÁ A MÁGICA: Em vez da lista fixa, chamamos a função!
+    const todosHorarios = gerarHorarios();
 
     // O comando SQL DATE() ignora as horas e compara apenas o dia/mês/ano
     const sql = "SELECT start_time FROM appointments WHERE DATE(start_time) = ?";
@@ -250,13 +277,13 @@ app.get('/api/availability', verificarToken, (req, res) => {
     db.query(sql, [date], (err, results) => {
         if (err) return res.status(500).json({ erro: 'Erro ao buscar disponibilidade.' });
 
-        // Extrai as horas que já estão gravadas no banco (ex: ['14:00', '09:45'])
+        // Extrai as horas que já estão gravadas no banco (ex: ['14:00', '09:30'])
         const horariosOcupados = results.map(ag => {
             const dataObj = new Date(ag.start_time);
             return dataObj.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' });
         });
 
-        // A MÁGICA: Filtra os horários mantendo apenas aqueles que NÃO estão ocupados
+        // Filtra os horários mantendo apenas aqueles que NÃO estão ocupados
         const horariosLivres = todosHorarios.filter(hora => !horariosOcupados.includes(hora));
 
         res.status(200).json(horariosLivres);
