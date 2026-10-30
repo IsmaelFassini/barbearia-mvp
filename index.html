@@ -118,14 +118,23 @@
             </header>
 
             <div class="flex-1 overflow-y-auto p-6 flex flex-col gap-6">
-                <div class="bg-zinc-800/50 border border-zinc-700/50 rounded-2xl p-6 text-center">
-                    <div class="w-16 h-16 bg-zinc-800 rounded-full flex items-center justify-center mx-auto mb-4 text-brand-500">
-                        <i class="ph ph-calendar-blank text-2xl"></i>
-                    </div>
-                    <h3 class="text-lg font-semibold text-white mb-2">Pronto para cortar?</h3>
-                    <p class="text-sm text-zinc-400">Marque o seu horário e garanta o seu estilo para a semana.</p>
-                </div>
-            </div>
+    <!-- Card de Boas-vindas -->
+    <div class="bg-zinc-800/50 border border-zinc-700/50 rounded-2xl p-6 text-center shadow-sm">
+        <div class="w-14 h-14 bg-zinc-800 rounded-full flex items-center justify-center mx-auto mb-3 text-brand-500">
+            <i class="ph ph-scissors text-2xl"></i>
+        </div>
+        <h3 class="text-lg font-semibold text-white mb-1">Pronto para o estilo?</h3>
+        <p class="text-xs text-zinc-400">Garanta a sua régua para a semana.</p>
+    </div>
+
+    <!-- Histórico de Agendamentos -->
+    <div>
+        <h3 class="text-sm font-bold text-zinc-400 uppercase tracking-wider mb-3">Meus Próximos Cortes</h3>
+        <div id="meus-agendamentos-list" class="flex flex-col gap-3">
+            <!-- Os cartões serão injetados aqui pelo JavaScript -->
+        </div>
+    </div>
+</div>
 
             <div class="p-4 border-t border-zinc-800 bg-zinc-900">
                 <button onclick="navigateTo('screen-services')" class="w-full h-14 bg-brand-500 hover:bg-brand-600 text-zinc-950 font-bold rounded-xl transition-colors text-lg flex items-center justify-center gap-2">
@@ -320,10 +329,62 @@
             document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
             document.getElementById(screenId).classList.add('active');
             
+            if(screenId === 'screen-home') carregarMeusAgendamentos();
             if(screenId === 'screen-services') renderServices();
             if(screenId === 'screen-datetime') renderDateTime();
             if(screenId === 'screen-admin') carregarAgendaBarbeiro();
         }
+
+async function carregarMeusAgendamentos() {
+    const token = localStorage.getItem('barbearia_token');
+    const list = document.getElementById('meus-agendamentos-list');
+    if (!token || !list) return;
+
+    list.innerHTML = '<p class="text-zinc-500 text-xs text-center py-4">A procurar agenda...</p>';
+
+    try {
+        const response = await fetch(`${API_URL}/client/appointments`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        
+        if (response.ok) {
+            const agendamentos = await response.json();
+            
+            if (agendamentos.length === 0) {
+                list.innerHTML = `
+                    <div class="p-6 bg-zinc-900 border border-zinc-800 border-dashed rounded-xl text-center">
+                        <p class="text-zinc-500 text-sm">Não tem cortes agendados.</p>
+                    </div>`;
+                return;
+            }
+
+            list.innerHTML = '';
+            agendamentos.forEach(ag => {
+                const stringLimpa = (ag.start_time || '').replace('T', ' ');
+                const partes = stringLimpa.split(' ');
+                const dataPartes = partes[0].split('-'); // [ano, mes, dia]
+                const horaMinuto = partes[1].substring(0, 5);
+                
+                list.innerHTML += `
+                    <div class="p-4 bg-zinc-800 rounded-xl border-l-4 border-l-brand-500 flex justify-between items-center shadow-md">
+                        <div>
+                            <h4 class="font-bold text-white text-md">${ag.service_name}</h4>
+                            <p class="text-xs text-zinc-400 mt-1 uppercase tracking-wide">
+                                <i class="ph-bold ph-calendar-blank inline-block align-middle mb-0.5"></i> 
+                                ${dataPartes[2]}/${dataPartes[1]} às <span class="text-brand-500 font-bold">${horaMinuto}</span>
+                            </p>
+                        </div>
+                        <div class="font-bold text-white">
+                            R$ ${Number(ag.price).toFixed(2)}
+                        </div>
+                    </div>
+                `;
+            });
+        }
+    } catch (error) {
+        list.innerHTML = '<p class="text-red-500 text-xs text-center py-4">Erro de conexão.</p>';
+    }
+}
 
         // 2. AUTENTICAÇÃO
         async function fazerLogin(event) {

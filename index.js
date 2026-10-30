@@ -201,6 +201,29 @@ app.post('/api/appointments', verificarToken, (req, res) => {
 });
 
 // ==========================================
+// ROTA: Meus Agendamentos (Visão do Cliente)
+// ==========================================
+app.get('/api/client/appointments', verificarToken, (req, res) => {
+    // O ID do utilizador é extraído do token de segurança automaticamente
+    const userId = req.userId; 
+
+    // Busca os agendamentos futuros do cliente e junta com o nome e preço do serviço
+    const sql = `
+        SELECT a.id, a.start_time, s.name as service_name, s.price 
+        FROM appointments a
+        JOIN services s ON a.service_id = s.id
+        WHERE a.user_id = ? AND a.start_time >= CURDATE()
+        ORDER BY a.start_time ASC
+    `;
+
+    // NOTA: Se na sua tabela "appointments" a coluna do cliente se chamar "client_id" em vez de "user_id", altere na linha acima!
+    db.query(sql, [userId], (err, results) => {
+        if (err) return res.status(500).json({ erro: 'Erro ao buscar histórico.' });
+        res.status(200).json(results);
+    });
+});
+
+// ==========================================
 // 9. ROTA DO BARBEIRO: Ver Agenda Completa
 // ==========================================
 app.get('/api/admin/appointments', verificarToken, (req, res) => {
