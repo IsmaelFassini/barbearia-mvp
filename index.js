@@ -212,7 +212,7 @@ app.get('/api/client/appointments', verificarToken, (req, res) => {
         SELECT a.id, a.start_time, s.name as service_name, s.price 
         FROM appointments a
         JOIN services s ON a.service_id = s.id
-        WHERE a.user_id = ? AND a.start_time >= CURDATE()
+        WHERE a.client_id = ? AND a.start_time >= CURDATE()
         ORDER BY a.start_time ASC
     `;
 
