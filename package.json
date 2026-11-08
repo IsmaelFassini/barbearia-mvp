@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+   "test": "jest --passWithNoTests"
   },
   "keywords": [],
   "author": "",
@@ -17,5 +17,8 @@
     "express": "^5.3.0",
     "jsonwebtoken": "^9.0.3",
     "mysql2": "^3.24.6"
+  },
+  "devDependencies": {
+    "jest": "^30.5.2"
   }
 }
