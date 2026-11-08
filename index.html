@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Barbearia Fassini - Agendamento</title>
+    <title>Barbearia MVP - Agendamento</title>
     
     <!-- Fonte Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -43,7 +43,7 @@
             <div class="flex-1 flex flex-col justify-center px-6">
                 <div class="text-center mb-10">
                     <i class="ph-fill ph-scissors text-brand-500 text-5xl mb-4"></i>
-                    <h1 class="text-3xl font-bold text-white tracking-tight">Barbearia Fassini</h1>
+                    <h1 class="text-3xl font-bold text-white tracking-tight">Barbearia MVP</h1>
                     <p class="text-zinc-400 mt-2">Agende seu horário com facilidade</p>
                 </div>
 
@@ -131,7 +131,6 @@
     <div>
         <h3 class="text-sm font-bold text-zinc-400 uppercase tracking-wider mb-3">Meus Próximos Cortes</h3>
         <div id="meus-agendamentos-list" class="flex flex-col gap-3">
-            <!-- Os cartões serão injetados aqui pelo JavaScript -->
         </div>
     </div>
 </div>
@@ -277,7 +276,6 @@
             
             <!-- Área principal com scroll automático (horizontal e vertical) -->
 <div class="flex-1 p-6 overflow-auto">
-    <!-- Esta div obriga o calendário a ter no mínimo 800px, protegendo o formato quadrado -->
     <div class="min-w-[800px]">
         <div class="grid grid-cols-7 gap-4 mb-2 text-center font-bold text-zinc-400 text-sm uppercase">
             <div>Dom</div><div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div>Sáb</div>
@@ -322,7 +320,7 @@
         const API_URL = 'https://barbearia-mvp-a0uf.onrender.com/api';
         let availableTimes = [];
         let appState = { service: null, date: null, time: null };
-        let dataCalendario = new Date(); // Memória global do calendário para ambas as telas
+        let dataCalendario = new Date(); 
 
         // 1. NAVEGAÇÃO E ESTADO DO FRONT-END
         function navigateTo(screenId) {
@@ -476,7 +474,7 @@ async function carregarMeusAgendamentos() {
 
         function mudarMesCliente(direcao) {
             dataCalendario.setMonth(dataCalendario.getMonth() + direcao);
-            renderDateTime(); // Recarrega os dias
+            renderDateTime(); 
         }
 
         function renderDateTime() {
@@ -484,7 +482,7 @@ async function carregarMeusAgendamentos() {
             const timeList = document.getElementById('time-list');
             if(!dateList) return;
             
-            // Atualiza o Título do Mês no topo da grelha
+            
             const textoMes = dataCalendario.toLocaleString('pt-BR', { month: 'long', year: 'numeric' });
             document.getElementById('mes-atual-cliente').textContent = textoMes;
 
